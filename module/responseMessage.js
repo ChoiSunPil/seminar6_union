@@ -16,5 +16,11 @@ module.exports = {
     NO_TABLE: "존재하지 않는 게시물 입니다.",
     LOGIN_SUCCESS: "로그인 성공",
     DB_ERR: "데이터베이스 내부 에러",
-    WRONG_TABLE_PW : "게시물 비밀번호가 일치하지 않습니다."
+    WRONG_TABLE_PW : "게시물 비밀번호가 일치하지 않습니다.",
+    CREATE_TOKEN : "토큰이 발급 되었습니다",
+    REFRESH_TOKEN : "토큰이 재 발급 되었습니다",
+    EMPTY_TOKEN : "헤더에 토큰이 없습니다.",
+    EXPRIED_TOKEN : "토큰이 만기 되었습니다",
+    INVALID_TOKEN : "토큰이 유효하지 않습니다.",
+    SEARCH_MAIN_INFO_SUCCESS : "메인 엑티비티 필요 정보 조회 성공"
 };

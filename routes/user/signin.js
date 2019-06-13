@@ -1,12 +1,13 @@
 var express = require('express');
 var router = express.Router();
+const path = require('path')
 const modulePath  = path.join(__dirname,'../../module')
 const connection = require(path.join(__dirname,'../../config/dbConfig.js'))
 const encryption = require(path.join(modulePath,'./encryption.js'))
 const responseMessage = require(path.join(modulePath,'./responseMessage.js'))
 const utils = require(path.join(modulePath,'./utils.js'))
 const statusCode = require(path.join(modulePath,'./statusCode.js'))
-var jwt = require('jsonwebtoken')
+var jwt = require(path.join(modulePath,'./jwt.js'))
 const searchIdQuery = "select * from user where id = ?"
 router.post('/',(req,res)=>{
     const id = req.body.user_id
@@ -31,19 +32,16 @@ router.post('/',(req,res)=>{
         {
           await encryption.asyncVerifyConsistency(password,result[0].salt,result[0].password).then(()=>{
       
-            let token =jwt.sign({
-                data: result[0].userIdx
-              }, 'secret', { expiresIn: '1h' });
+            let token =jwt.sign(result[0].idx)
 
               let data ={
-                  token : token
+                token 
               }
               res.send(utils.successTrue(statusCode.OK,responseMessage.LOGIN_SUCCESS,data))
           }).catch(()=>{
               res.send(utils.successFalse(statusCode.NO_CONTENT,responseMessage.ID_OR_PW_WRONG_VALUE))
           })
         }
-       
       
       
       
