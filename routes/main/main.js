@@ -7,91 +7,51 @@ const utils = require(path.join(modulePath,'./utils.js'))
 const statusCode = require(path.join(modulePath,'./statusCode.js'))
 const pool = require(path.join(__dirname,'../../config/dbPoolConfig.js'))
 const authUtil = require(path.join(modulePath,'./authUtils'))
-
 /*********필요한 쿼리*************/
-const SelectMainImage = "SELECT img FROM mainImg ORDER BY mainImgIdx  DESC LIMIT =1  "
+const SelectMainImage = "SELECT img FROM mainImg ORDER BY mainImgIdx DESC LIMIT 1  "
 const SelectPopularWebtoons = "SELECT webtoonIdx ,title, writer, thumbNail,views FROM webtoon WHERE IsEnd =1 ORDER BY views DESC   "
 const SelectLatestWebtoons = "SELECT webtoonIdx ,title, writer, thumbNail,views FROM webtoon  WHERE IsEnd =1 ORDER BY webtoonIdx DESC "
 const SelectEndWebtoons  = "SELECT webtoonIdx ,title, writer, thumbNail,views FROM webtoon where IsEnd = 1"
 /*********필요한 쿼리*************/
-
-router.get('./',authUtil.isLoggedin,(req,res)=>{
+router.get('/',authUtil.isLoggedin, async(req,res)=>{
     
-    let json = new Object()
+    let json = {}
     let check = 0
-    pool.getConnection((err, connection) => {
-        
+    try{
+        const connection = await pool.getConnection(async conn => conn);
 
+        try{
+           const [mainImg] = await connection.query(SelectMainImage)
+           const [popularWebtoonList] =  await connection.query(SelectPopularWebtoons)
+           const [LatestWebtoonList] = await connection.query(SelectLatestWebtoons)
+           const [EndWebtoonList] = await connection.query(SelectEndWebtoons) 
+           console.log(mainImg)
+           console.log(mainImg[0].img)
+           console.log(popularWebtoonList)
+           json.ActivityImg = mainImg[0].img
+           console.l
+           json.SelectPopularWebtoonList = popularWebtoonList
+           json.LatestWebtoonList = LatestWebtoonList
+           json.EndWebtoonList = EndWebtoonList
+           res.send(utils.successTrue(statusCode.OK,responseMessage.SEARCH_MAIN_INFO_SUCCESS,json))
+           connection.release()
+        }
+        catch(err)
+        {
+            console.log(err)
+            connection.release()
+            res.send(utils.successFalse(statusCode.DB_ERROR,responseMessage.DB_ERR))
 
-        connection.query(SelectMainImage,(err, result) => {
-            if (err) {
+        }
 
-                check = -1
-   
-                
-            } else {
-            
-                json.ActivityImg = result[0].img   
-            
-            }
-        });
-        
-        
-        connection.query(SelectPopularWebtoons, (err, result) => {
-            if (err) {
-                check = -1
-            } else {
-
-                
-                
-                    json.SelectPopularWebtoonList = result   
-                
-                
-    
-            }
-        });
-    
-        connection.query(SelectLatestWebtoons , (err, result) => {
-            if (err) {
-                check = -1
-            } else {
-            
-                json.SelectLatestWebtoonList = result   
-
-
-            
-            }
-        });
-
-
-        connection.query(SelectEndWebtoons , (err, result) => {
-            if (err) {
-                check = -1
-            } else {
-                    json.SelectEndWebtoonList = result   
-                
-                connection.release()
-            }
-        });
-
-
-    while(1)
+    }catch(err)
     {
-      if(check == -1)
-      {
+        console.log(err)
         res.send(utils.successFalse(statusCode.DB_ERROR,responseMessage.DB_ERR))
-      }
-      else if(check == 4){
-        res.send(utils.successFalse(statusCode.OK,responseMessage.SEARCH_MAIN_INFO_SUCCESS,json))
-      }
-
     }
 
     });
 
-
-
-})
 
 
 

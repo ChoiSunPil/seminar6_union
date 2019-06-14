@@ -10,17 +10,17 @@ const statusCode = require(path.join(modulePath,'./statusCode.js'))
 const searchIdQuery = "select * from user where id = ?"
 const insertUserQuery =  'INSERT INTO user (id,name,password, salt) VALUES (?, ? ,? ,?)'
 router.post('/',(req,res)=>{
-
-const id = req.body.user_id
-const password  =req.body.user_password
-const name = req.body.user_name
+console.log(req.body)
+const id = req.body.id
+const password  =req.body.password.toString()
+const name = req.body.name
 if(id == undefined || password == undefined || name == undefined)
     {
     //요청 바디값 오류
     res.send(utils.successFalse(statusCode.BAD_REQUEST,responseMessage.NULL_VALUE))
     return
     }
-    connection.query(selectUserQuery,[id],async(err, result)=>{
+    connection.query(searchIdQuery,[id],async(err, result)=>{
         if(err)
         {
             //디비 내부 오류
@@ -39,6 +39,7 @@ if(id == undefined || password == undefined || name == undefined)
     
         }
         else{
+            console.log(password)
             let hashJson = await encryption.asyncCipher(password)
             console.log(hashJson)
             connection.query(insertUserQuery,[id,name,hashJson.cryptoPw,hashJson.salt],(err,result)=>{

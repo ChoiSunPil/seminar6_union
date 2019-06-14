@@ -5,7 +5,7 @@ const encryption ={
         return new Promise(async (resolve)=>{
         let _salt = (await crypto.randomBytes(32)).toString('base64')
         let _cryptoPw   = (await crypto.hmac('sha1',_salt)(pw)).toString('base64')
-       resolve( {cryptoPw : _cryptoPw , salt : _salt  })
+        resolve( {cryptoPw : _cryptoPw , salt : _salt  })
         })
     },
     asyncVerifyConsistency : (pw,salt,dbPw)=>{

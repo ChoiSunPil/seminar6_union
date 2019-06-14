@@ -10,15 +10,15 @@ const statusCode = require(path.join(modulePath,'./statusCode.js'))
 var jwt = require(path.join(modulePath,'./jwt.js'))
 const searchIdQuery = "select * from user where id = ?"
 router.post('/',(req,res)=>{
-    const id = req.body.user_id
-    const password  =req.body.user_password
+    const id = req.body.id
+    const password  =req.body.password
     if(id == undefined || password == undefined)
     {
     //요청 바디값 오류
     res.send(utils.successFalse(statusCode.BAD_REQUEST,responseMessage.NULL_VALUE))
     return
     }
-    connection.query(selectUserQuery,[id],async(err, result)=>{
+    connection.query(searchIdQuery,[id],async(err, result)=>{
         if(err)
         {
           res.send(utils.successFalse(statusCode.DB_ERROR,responseMessage.DB_ERR))
