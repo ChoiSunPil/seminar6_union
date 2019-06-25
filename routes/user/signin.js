@@ -9,6 +9,11 @@ const utils = require(path.join(modulePath,'./utils.js'))
 const statusCode = require(path.join(modulePath,'./statusCode.js'))
 var jwt = require(path.join(modulePath,'./jwt.js'))
 const searchIdQuery = "select * from user where id = ?"
+
+
+
+/***************선필 part*****************/
+
 router.post('/',(req,res)=>{
     const id = req.body.id
     const password  =req.body.password
@@ -33,9 +38,10 @@ router.post('/',(req,res)=>{
           await encryption.asyncVerifyConsistency(password,result[0].salt,result[0].password).then(()=>{
       
             let token =jwt.sign(result[0].idx)
+            delete token.refreshToken
 
               let data ={
-                token 
+                "token" : token.token 
               }
               res.send(utils.successTrue(statusCode.OK,responseMessage.LOGIN_SUCCESS,data))
           }).catch(()=>{

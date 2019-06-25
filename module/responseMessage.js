@@ -22,5 +22,9 @@ module.exports = {
     EMPTY_TOKEN : "헤더에 토큰이 없습니다.",
     EXPRIED_TOKEN : "토큰이 만기 되었습니다",
     INVALID_TOKEN : "토큰이 유효하지 않습니다.",
-    SEARCH_MAIN_INFO_SUCCESS : "메인 엑티비티 필요 정보 조회 성공"
+    SEARCH_MAIN_INFO_SUCCESS : "메인 엑티비티 필요 정보 조회 성공",
+    INSERT_LIKE : "좋아요를 하였습니다.",
+    DELETE_LIKE : "좋아요를 취소하였습니다",
+    MEMBERSHIP_INSERT_FAIL :  "인서트 실패",
+    MEMBERSHIP_INSERT_SUCCESS : "인서트 성공"
 };

@@ -9,6 +9,12 @@ const utils = require(path.join(modulePath,'./utils.js'))
 const statusCode = require(path.join(modulePath,'./statusCode.js'))
 const searchIdQuery = "select * from user where id = ?"
 const insertUserQuery =  'INSERT INTO user (id,name,password, salt) VALUES (?, ? ,? ,?)'
+
+
+/***************선필 part*****************/
+
+
+
 router.post('/',(req,res)=>{
 console.log(req.body)
 const id = req.body.id

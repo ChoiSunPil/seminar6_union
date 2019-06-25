@@ -13,6 +13,11 @@ const SelectPopularWebtoons = "SELECT webtoonIdx ,title, writer, thumbNail,views
 const SelectLatestWebtoons = "SELECT webtoonIdx ,title, writer, thumbNail,views FROM webtoon  WHERE IsEnd =1 ORDER BY webtoonIdx DESC "
 const SelectEndWebtoons  = "SELECT webtoonIdx ,title, writer, thumbNail,views FROM webtoon where IsEnd = 1"
 /*********필요한 쿼리*************/
+
+
+/***************선필 part*****************/
+
+
 router.get('/',authUtil.isLoggedin, async(req,res)=>{
     
     let json = {}
